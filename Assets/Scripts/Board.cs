@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,11 +7,10 @@ using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 using Vector3 = UnityEngine.Vector3;
 
-public class boardManager : MonoBehaviour {
+public class Board : MonoBehaviour {
 
     public int boardSize;
-    public Chesspiece testPiece;
-    Chesspiece[] allPieces;
+    public List<Chesspiece> allPieces;
     RectTransform rectT;
     string[,] boardState;
 
@@ -26,9 +26,6 @@ public class boardManager : MonoBehaviour {
     }
     // Start is called before the first frame update
     void Start() {
-        placeItem(testPiece, 4, 4);
-        printBoardState();
-        printPieceList();
     }
 
     // Update is called once per frame
@@ -52,11 +49,9 @@ public class boardManager : MonoBehaviour {
                 boardState[i, j] = "-";
             }
         }
-        Debug.LogWarning("DEBUG: allPieces[] contains testPiece only");
-        allPieces = new Chesspiece[] {testPiece};
     }
 
-    void printBoardState() {
+    public void printBoardState() {
         string toPrint = "PRINTED BOARD =>";
 
         string col = "";
@@ -78,19 +73,19 @@ public class boardManager : MonoBehaviour {
         Debug.Log(toPrint);
     }
 
-    void printPieceList() {
-        string log = "AllPieces: =>\n";
+    public void printPieceList() {
+        string log = "AllPieces[" + allPieces.Count + "]: =>\n";
         foreach (Chesspiece p in allPieces) {
             log += p.getPrint() + "\n";
         }
         Debug.Log(log);
     }
 
-    void placeItem(Chesspiece p, int x, int y) {
+    public void placeItem(Chesspiece p, int x, int y) {
         // check for user errors...
         Debug.Assert(
-            (x > 0) && (x < boardSize) && (y > 0) && (y < boardSize), 
-            "The input coordinate lies outside the board's dimensions."
+            (x > -1) && (x < boardSize) && (y > -1) && (y < boardSize), 
+            $"The input coordinate ({x}, {y}) lies outside the board's dimensions ({boardSize})."
         );
 
         Debug.Assert(rectT.pivot == new Vector2(0, 1), "The board's pivot is not 0,1. Fix in inspector");
@@ -104,8 +99,8 @@ public class boardManager : MonoBehaviour {
         float wHeight = Math.Abs(corners[0].y - corners[1].y);
 
         Vector2 cellSz = new Vector2(wWidth / boardSize, wHeight / boardSize);
-        Vector3 boardLoc = new Vector3(x * cellSz.x + cellSz.x/2, -1 * (y * cellSz.y + cellSz.y/2), 0);
-        
+        Vector3 boardLoc = new Vector3(y * cellSz.y + cellSz.y/2, -1 * (x * cellSz.x + cellSz.x/2), 0);
+
         p.transform.position = rectT.position + boardLoc;
 
         // handle boardState and Piece data

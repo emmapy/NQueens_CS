@@ -15,4 +15,14 @@ public class Queen : Chesspiece
         if (Math.Abs(row-r1) == Math.Abs(col-c1)) return true;
         return false;
     }
+
+    public Boolean canReach(Chesspiece p) {
+        int[] loc = p.getLoc();
+        int r1 = loc[0];
+        int c1 = loc[1];
+        if (row == r1) return true;
+        if (col == c1) return true;
+        if (Math.Abs(row-r1) == Math.Abs(col-c1)) return true;
+        return false;
+    }
 }
