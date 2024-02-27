@@ -6,14 +6,12 @@ using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 using Vector3 = UnityEngine.Vector3;
 
-public class boardManager : MonoBehaviour
-{
+public class boardManager : MonoBehaviour {
 
     public int boardSize;
-    public GameObject testPiece;
-
+    public Chesspiece testPiece;
+    Chesspiece[] allPieces;
     RectTransform rectT;
-
     string[,] boardState;
 
     void Awake() {
@@ -22,7 +20,6 @@ public class boardManager : MonoBehaviour
             return;
         }
         
-
         // create chess board
         createBoard(boardSize);
     
@@ -31,6 +28,12 @@ public class boardManager : MonoBehaviour
     void Start() {
         placeItem(testPiece, 4, 4);
         printBoardState();
+        printPieceList();
+    }
+
+    // Update is called once per frame
+    void Update() {
+        
     }
 
     void createBoard(int size) {
@@ -40,7 +43,6 @@ public class boardManager : MonoBehaviour
         mat.SetFloat("_boardDim", boardSize);
 
         initBoardState();
-
     }
 
     void initBoardState() {
@@ -50,6 +52,8 @@ public class boardManager : MonoBehaviour
                 boardState[i, j] = "-";
             }
         }
+        Debug.LogWarning("DEBUG: allPieces[] contains testPiece only");
+        allPieces = new Chesspiece[] {testPiece};
     }
 
     void printBoardState() {
@@ -57,7 +61,7 @@ public class boardManager : MonoBehaviour
 
         string col = "";
         
-        for (int j = 0; j<boardState.GetLength(1); j++){
+        for (int j = 0; j<boardState.GetLength(1); j++) {
             col += "\tc" + j;
         }
         toPrint += "\n" + col;
@@ -73,13 +77,16 @@ public class boardManager : MonoBehaviour
 
         Debug.Log(toPrint);
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+    void printPieceList() {
+        string log = "AllPieces: =>\n";
+        foreach (Chesspiece p in allPieces) {
+            log += p.getPrint() + "\n";
+        }
+        Debug.Log(log);
     }
 
-    void placeItem(GameObject obj, int x, int y) {
+    void placeItem(Chesspiece p, int x, int y) {
         // check for user errors...
         Debug.Assert(
             (x > 0) && (x < boardSize) && (y > 0) && (y < boardSize), 
@@ -88,6 +95,7 @@ public class boardManager : MonoBehaviour
 
         Debug.Assert(rectT.pivot == new Vector2(0, 1), "The board's pivot is not 0,1. Fix in inspector");
 
+        // handle Transform....
         Vector3[] corners = new Vector3[4];
         rectT.GetWorldCorners(corners);
 
@@ -98,9 +106,11 @@ public class boardManager : MonoBehaviour
         Vector2 cellSz = new Vector2(wWidth / boardSize, wHeight / boardSize);
         Vector3 boardLoc = new Vector3(x * cellSz.x + cellSz.x/2, -1 * (y * cellSz.y + cellSz.y/2), 0);
         
-        obj.transform.position = rectT.position + boardLoc;
-        boardState[x, y] = "X";
+        p.transform.position = rectT.position + boardLoc;
 
+        // handle boardState and Piece data
+        boardState[x, y] = p.getToken();
+        p.setLoc(x, y);
 
     }
 }

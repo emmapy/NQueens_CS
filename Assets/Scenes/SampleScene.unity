@@ -421,10 +421,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 483326864}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 467.27982, y: -42.36499}
-  m_SizeDelta: {x: 515.44, y: 539.27}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -350, y: 350}
+  m_SizeDelta: {x: 700, y: 700}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &999070858
 MonoBehaviour:
@@ -477,10 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardSize: 5
-  squarePrefab: {fileID: 4205601525184094825, guid: 57873f935c4294060b85ede14d65e86e, type: 3}
   testPiece: {fileID: 1073798236}
-  mainCam: {fileID: 519420031}
-  canvas: {fileID: 483326867}
 --- !u!1 &1073798236
 GameObject:
   m_ObjectHideFlags: 0
