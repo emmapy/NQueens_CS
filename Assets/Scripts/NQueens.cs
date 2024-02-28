@@ -25,6 +25,7 @@ public class NQueens : MonoBehaviour
     public Board myBoard;
     public GameObject queenPrefab;
 
+    public int MAX_STEPS = 100;
     void Awake() {
         // instantiate n queens
         for (int i = 0; i < myBoard.boardSize; i++) {
@@ -37,16 +38,15 @@ public class NQueens : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         initializeNQueens();
-        Debug.Log("initialized");
+        solveNQueens();
         myBoard.printBoardState();
         myBoard.printPieceList();
-
     }
 
     void initializeNQueens() {
         int[] startingCoords = new int[myBoard.boardSize];
         for (int i = 0; i < myBoard.boardSize; i++) {
-            startingCoords[i] = Random.Range(0, myBoard.boardSize-1);
+            startingCoords[i] = Random.Range(0, myBoard.boardSize);
         }
         populateBoard(startingCoords);
     }
@@ -56,5 +56,79 @@ public class NQueens : MonoBehaviour
             Chesspiece piece = myBoard.allPieces[i];
             myBoard.placeItem(piece, coords[i], i);
         }
+    }
+
+    void solveNQueens() {
+
+        for (int i = 0; i < MAX_STEPS; i++) {
+            List<int> boardConflicts = getBoardConflicts();
+
+            if (boardConflicts.Count == 0) {
+                Debug.Log($"NQueens complete in {i} steps");
+                return;
+            } else {
+                int rndConflictIndex = Random.Range(0, boardConflicts.Count);
+                int rndConflictRow = boardConflicts[rndConflictIndex];
+
+                List<int> bestMoves = findBestMoves(rndConflictRow);
+                int rndBestMove = bestMoves[Random.Range(0, bestMoves.Count)];
+
+                // move the rndConflictRow piece to row, rndBestMove
+                Chesspiece piece = myBoard.allPieces[rndConflictRow];
+                myBoard.moveItem(piece, rndBestMove, rndConflictRow);
+            }
+        }
+
+        Debug.LogError($"did not finish nQueens in {MAX_STEPS} steps, fail");
+    }
+
+    // return a List<int> of indeces, each representing a row that is in conflict
+    List<int> getBoardConflicts() {
+        List<int> conflicts = new List<int>();
+        for (int i = 0; i < myBoard.boardSize; i++) {
+            Chesspiece p = myBoard.allPieces[i];
+            for (int j = 0; j < myBoard.boardSize; j++) {
+                if (i == j) continue;
+                if ((p as Queen).canReach(myBoard.allPieces[j])) {
+                    conflicts.Add(i);
+                    break;
+                }
+            }
+        }
+        return conflicts;   
+    }
+
+    // return a List<int> of best possible moves along the row that have the fewest possible conflicts
+     List<int> findBestMoves(int row) {
+        List<int> bestConflictCells = new List<int>();
+
+        int bestConflictsThreshold = -1;
+
+        // traverse this row (loop over col)
+        for (int col = 0; col < myBoard.boardSize; col++) {
+
+            // compare this cell (row, col) to all queens (except for self)
+            int conflictsFound = 0;
+            for (int q = 0; q < myBoard.boardSize; q++) {
+                Chesspiece queen = myBoard.allPieces[q];
+                if (q == row) {
+                    // this queen is self, skip
+                    continue;
+                } else if ((queen as Queen).canReach(col, row)) {
+                    conflictsFound += 1;
+                } 
+                // else does not conflict
+            }
+
+            // update bestConflicts accordingly
+            if (conflictsFound == bestConflictsThreshold) {
+                bestConflictCells.Add(col);
+            } else if (bestConflictsThreshold == -1 || conflictsFound < bestConflictsThreshold) {
+                bestConflictsThreshold = conflictsFound;
+                bestConflictCells.Clear();
+                bestConflictCells.Add(col);
+            }
+        }
+        return bestConflictCells;
     }
 }

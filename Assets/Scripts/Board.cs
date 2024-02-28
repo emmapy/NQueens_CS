@@ -119,8 +119,6 @@ public class Board : MonoBehaviour {
         Boolean isEmpty = boardState[x, y] == "-";
 
         Boolean isSelf = loc[0] == x && loc[1] == y;
-        Debug.Log($"moveItem from loc = {string.Join(", ", loc)}, to  x,y = {x}, {y}");
-        Debug.Log($"isSelf = {isSelf}");
         if (!isEmpty && !isSelf) {
             Debug.LogError($"coordinate {x},{y} is not empty and capturing is not implemented, printing board =>");
             printBoardState();

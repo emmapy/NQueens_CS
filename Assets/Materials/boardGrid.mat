@@ -93,7 +93,7 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - _boardDim: 4
+    - _boardDim: 10
     - _invertColors: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

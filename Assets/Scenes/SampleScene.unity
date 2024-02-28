@@ -476,7 +476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6001b8ea1ef4408ac2b1069a2f88ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardSize: 4
+  boardSize: 10
   allPieces: []
 --- !u!114 &999070861
 MonoBehaviour:
@@ -492,6 +492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myBoard: {fileID: 999070860}
   queenPrefab: {fileID: 2710778554975940455, guid: b1c21c88b1fc343a7a3e1985dbb3a417, type: 3}
+  MAX_STEPS: 100
 --- !u!1 &1986853784
 GameObject:
   m_ObjectHideFlags: 0
