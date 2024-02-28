@@ -81,6 +81,7 @@ public class Board : MonoBehaviour {
         Debug.Log(log);
     }
 
+    // place item at a COORDINATE x,y
     public void placeItem(Chesspiece p, int x, int y) {
         // check for user errors...
         Debug.Assert(
@@ -107,5 +108,30 @@ public class Board : MonoBehaviour {
         boardState[x, y] = p.getToken();
         p.setLoc(x, y);
 
+    }
+
+    public void moveItem(Chesspiece p, int x, int y) {
+        // check that p canreach x, y
+        Debug.Assert(p.canReach(x, y), $"Attempting to move Chesspiece to unreachable location ({x}, {y})", p);
+        
+        int[] loc = p.getLoc();
+
+        Boolean isEmpty = boardState[x, y] == "-";
+
+        Boolean isSelf = loc[0] == x && loc[1] == y;
+        Debug.Log($"moveItem from loc = {string.Join(", ", loc)}, to  x,y = {x}, {y}");
+        Debug.Log($"isSelf = {isSelf}");
+        if (!isEmpty && !isSelf) {
+            Debug.LogError($"coordinate {x},{y} is not empty and capturing is not implemented, printing board =>");
+            printBoardState();
+        }
+
+
+
+        boardState[loc[0], loc[1]] = "-";
+        placeItem(p, x, y);
+
+        // clear p's current cell data
+        // move piece (and populate new data)
     }
 }

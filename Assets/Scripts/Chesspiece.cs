@@ -25,9 +25,10 @@ public class Chesspiece : MonoBehaviour
         return token;
     }
 
-    public void setLoc(int r, int c) {
-        row = r;
-        col = c;
+    // sets a location coordinate
+    public void setLoc(int x, int y) {
+        row = y;
+        col = x;
     }
 
     public int[] getLoc() {
@@ -35,13 +36,18 @@ public class Chesspiece : MonoBehaviour
     }
 
     public string getPrint() {
-        string prefix = token + " at " + row + ", " + col;
+        string prefix = token + " at coordinate " + col + ", " + row;
         string suffix = row == -1 || col == -1 ? " (UNINITIALIZED)" : "";
         return prefix + suffix;
     }
 
-    public Boolean canReach() {
-        Debug.LogError("calling canReach() on generic parent Chesspiece");
+    public virtual Boolean canReach(int r1, int c1) {
+        Debug.LogError("calling canReach(row, col) on generic parent Chesspiece");
+        return false;
+    }
+
+    public virtual Boolean canReach(Chesspiece p) {
+        Debug.LogError("calling canReach(piece) on generic parent Chesspiece");
         return false;
     }
 }

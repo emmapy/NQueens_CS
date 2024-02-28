@@ -41,30 +41,6 @@ public class NQueens : MonoBehaviour
         myBoard.printBoardState();
         myBoard.printPieceList();
 
-        List<int>[] attacks = new List<int>[myBoard.allPieces.Count];
-
-
-        for (int i = 0; i < myBoard.allPieces.Count; i++) {
-            Chesspiece qI = myBoard.allPieces[i];
-            attacks[i] = new List<int>();
-            for (int j = 0; j < myBoard.allPieces.Count; j++) {
-                if (j == i) continue;
-                Chesspiece qJ = myBoard.allPieces[j];
-                int[] loc = qJ.getLoc();
-                if ((qI as Queen).canReach(loc[1], loc[0])) {
-                    attacks[i].Add(j);
-                }
-            }
-        }
-
-        string log = "";
-        int k = 0;
-        foreach(List<int> L in attacks) {
-            log += k + " can attack " + string.Join(", ", L) + "\n";
-            k += 1;
-        }
-        Debug.Log(log);
-
     }
 
     void initializeNQueens() {
