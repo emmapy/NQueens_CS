@@ -65,7 +65,7 @@ public class Board : MonoBehaviour {
             string row = "r"+i;
 
             for (int j = 0; j < boardState.GetLength(1); j++) {
-                row += "\t" + boardState[i, j] + " ";
+                row += "\t" + boardState[j, i] + " ";
             }
             toPrint += "\n" + row;
         }
@@ -99,7 +99,7 @@ public class Board : MonoBehaviour {
         float wHeight = Math.Abs(corners[0].y - corners[1].y);
 
         Vector2 cellSz = new Vector2(wWidth / boardSize, wHeight / boardSize);
-        Vector3 boardLoc = new Vector3(y * cellSz.y + cellSz.y/2, -1 * (x * cellSz.x + cellSz.x/2), 0);
+        Vector3 boardLoc = new Vector3(x * cellSz.x + cellSz.x/2, -1 * (y * cellSz.y + cellSz.y/2), 0);
 
         p.transform.position = rectT.position + boardLoc;
 

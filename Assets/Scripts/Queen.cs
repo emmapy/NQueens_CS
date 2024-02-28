@@ -10,18 +10,9 @@ public class Queen : Chesspiece
     }
 
     public Boolean canReach(int r1, int c1) {
-        if (row == r1) return true;
-        if (col == c1) return true;
-        if (Math.Abs(row-r1) == Math.Abs(col-c1)) return true;
-        return false;
-    }
-
-    public Boolean canReach(Chesspiece p) {
-        int[] loc = p.getLoc();
-        int r1 = loc[0];
-        int c1 = loc[1];
-        if (row == r1) return true;
-        if (col == c1) return true;
+        Debug.Log($"from row {row}, col {col} (={col}, {row}), attempting to reach row {r1}, col {c1} = ({c1}, {r1})");
+        if (row == r1) return true; // matches on y
+        if (col == c1) return true; // matches on x
         if (Math.Abs(row-r1) == Math.Abs(col-c1)) return true;
         return false;
     }

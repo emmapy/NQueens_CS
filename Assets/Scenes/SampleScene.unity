@@ -476,7 +476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6001b8ea1ef4408ac2b1069a2f88ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardSize: 5
+  boardSize: 4
   allPieces: []
 --- !u!114 &999070861
 MonoBehaviour:

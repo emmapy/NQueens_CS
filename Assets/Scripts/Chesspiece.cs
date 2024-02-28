@@ -31,7 +31,7 @@ public class Chesspiece : MonoBehaviour
     }
 
     public int[] getLoc() {
-        return new int[]{row, col};
+        return new int[]{col, row};
     }
 
     public string getPrint() {
